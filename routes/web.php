@@ -15,11 +15,23 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
+// Route::get ( '/', function () {
+// 	return view ( 'admin.adminLogin' );
+// } );
+
+Route::get('/mainAdmin','AuthController@show');
+Route::post ('/customLogin', 'AuthController@customLogin');
+// Route::post ('/register', 'AuthController@register' );
+
+
+
+// Auth::routes();
+
+// Route::get('/home', 'HomeController@index')->name('home');
 Route::group(['middleware' => ['auth']], function () { 
 	Route::get('/admin','AdminController@index');
-	Route::get('/addItem','ItemController@index');
+	Route::resource('/category','CategoryController');
+	Route::get ( '/logout', 'AuthController@logout' );
 
 });

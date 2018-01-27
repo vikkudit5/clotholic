@@ -63,7 +63,7 @@
         </li> -->
 
         <li>
-          <a href="/addItem">
+          <a href="/category">
             <i class="fa fa-th"></i> <span>Add Item</span>
             <span class="pull-right-container">
               <small class="label pull-right bg-green">new</small>
