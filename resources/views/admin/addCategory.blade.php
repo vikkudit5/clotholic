@@ -13,29 +13,31 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            @if(count($errors))
-      <div class="alert alert-danger">
-        <strong>Whoops!</strong> There were some problems with your input.
-        <br/>
-        <ul>
-          @foreach($errors->all() as $error)
-          <li>{{ $error }}</li>
-          @endforeach
-        </ul>
-      </div>
-    @endif
-            <form role="form" action="" method="post" enctype="multiple/form-data">
+            
+             @if (Session::get('message'))
+                   <div class="alert alert-success">
+                      <button type="button" class="close" data-dismiss="alert">
+                                            ×
+                       </button>
+                      {!! Session::get('message') !!}
+                  </div>
+           @endif
+
+
+            <form role="form" action="" method="post" enctype="multipart/form-data">
               {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Category Name</label>
-                  <input type="text" class="form-control" id="category_name" placeholder="Enter Category" name="category_name">
+                  <input type="text" class="form-control" id="name" placeholder="Enter Category" name="name">
                 </div>
+
+                 <p>@if ($errors->has('name'))<p class="help-block" style="color: #CA0606">{!!$errors->first('name')!!}</p>@endif
                 
                 <div class="form-group">
                   <label for="exampleInputFile">Image</label>
-                  <input type="file" id="categoryImage" name="categoryImage">
-
+                  <input type="file" id="image" name="image">
+                    <p>@if ($errors->has('image'))<p class="help-block" style="color: #CA0606">{!!$errors->first('image')!!}</p>@endif
                 </div>
                 
               </div>

@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Input;
+use Redirect;
+use  App\User;
+use App\Category;
 
 class CategoryController extends Controller
 {
@@ -35,14 +39,34 @@ class CategoryController extends Controller
      */
     public function store(Request $request)
     {
+       
         
-        $v = Validator::make($request->all(),[
-                'category_name' => 'required|unique'
-        ]);
+        $input = array_except($request->all(), '_token');
+        $name = $input['name'];
 
-        if($v->fails())
-        {
-            return redirect()->back()->withErrors($v->errors);
+        
+
+        $rules  =  array(
+                    'name'       => 'unique:categories|required',
+                    'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:1024',
+                   
+                       ) ;
+         $validator = Validator::make($input, $rules);
+        
+
+          //check validation
+        if ($validator->fails()) {
+
+             return Redirect::back()->withErrors($validator)->withInput();
+        }
+
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('upload/category'), $imageName);
+
+       $insert_category = Category::create(['name'=>$name,'image'=>$imageName]);
+        if($insert_category){
+
+           return Redirect::back()->with('message', '<strong>' .$input['name'] . '</strong> has been created succesfully');
         }
 
 

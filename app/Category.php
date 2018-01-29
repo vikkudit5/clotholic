@@ -6,7 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    protected $fillable = ['name'];
+    protected $fillable = ['name','image'];
+
+    protected $hidden = [
+        'remember_token',
+    ];
 
 
     public function main_sub_category()
