@@ -8,9 +8,16 @@ use Illuminate\Support\Facades\Input;
 use Redirect;
 use  App\User;
 use App\Category;
+use App\Http\Helpers\ImageHelper;
 
 class CategoryController extends Controller
 {
+    use ImageHelper;
+
+     function __construct(ImageHelper $imageHelper)
+    {
+        $this->imageHelper = $imageHelper;
+    }
     /**
      * Display a listing of the resource.
      *
@@ -18,7 +25,10 @@ class CategoryController extends Controller
      */
     public function index()
     {
-        return view('admin.addCategory');
+        $categoryList = Category::get();
+
+        return view('admin.categoryList',compact('categoryList'));
+        
     }
 
     /**
@@ -28,7 +38,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        //
+        return view('admin.addCategory');
     }
 
     /**
@@ -40,7 +50,7 @@ class CategoryController extends Controller
     public function store(Request $request)
     {
        
-        
+      
         $input = array_except($request->all(), '_token');
         $name = $input['name'];
 
@@ -60,8 +70,10 @@ class CategoryController extends Controller
              return Redirect::back()->withErrors($validator)->withInput();
         }
 
-        $imageName = time().'.'.$request->image->getClientOriginalExtension();
-        $request->image->move(public_path('upload/category'), $imageName);
+         $imageName = $this->imageHelper->singleImageUpload($request);
+
+        // $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        // $request->image->move(public_path('upload/category'), $imageName);
 
        $insert_category = Category::create(['name'=>$name,'image'=>$imageName]);
         if($insert_category){
