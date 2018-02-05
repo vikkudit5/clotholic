@@ -8,16 +8,11 @@ use Illuminate\Support\Facades\Input;
 use Redirect;
 use  App\User;
 use App\Category;
-use App\Http\Helpers\ImageHelper;
+
 
 class CategoryController extends Controller
 {
-    use ImageHelper;
-
-     function __construct(ImageHelper $imageHelper)
-    {
-        $this->imageHelper = $imageHelper;
-    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -25,6 +20,8 @@ class CategoryController extends Controller
      */
     public function index()
     {
+
+
         $categoryList = Category::get();
 
         return view('admin.categoryList',compact('categoryList'));
@@ -38,6 +35,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
+
         return view('admin.addCategory');
     }
 
@@ -70,10 +68,10 @@ class CategoryController extends Controller
              return Redirect::back()->withErrors($validator)->withInput();
         }
 
-         $imageName = $this->imageHelper->singleImageUpload($request);
+         // $imageName = $this->imageHelper->singleImageUpload($request);
 
-        // $imageName = time().'.'.$request->image->getClientOriginalExtension();
-        // $request->image->move(public_path('upload/category'), $imageName);
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('upload/category'), $imageName);
 
        $insert_category = Category::create(['name'=>$name,'image'=>$imageName]);
         if($insert_category){
@@ -103,7 +101,8 @@ class CategoryController extends Controller
      */
     public function edit($id)
     {
-        //
+        $editCategory = Category::find($id);
+        return view('admin.editCategory',compact('editCategory'));
     }
 
     /**
@@ -113,9 +112,9 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function updateCategory(Request $request, $id)
     {
-        //
+        dd($request->all());
     }
 
     /**
@@ -126,6 +125,50 @@ class CategoryController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $categoryid = Category::find($id);
+        $file= $categoryid->image;//fetch image
+         $filename = public_path().'/upload/category/'.$file;//path of image
+         unlink($filename);//delete image from folder
+        $deleteCategory = $categoryid->delete();//delete categroy
+        if($deleteCategory)
+        {
+            return 1;
+        }else
+        {
+            return 0;
+        }
+
     }
+
+    public function disable(Request $request)
+    {
+        
+
+        $statusId = $request->statusId;
+        $categoryId = $request->categoryId;
+        $updateStatus = Category::where('id',$categoryId)->update(['status'=>$statusId]);
+        if($updateStatus)
+        {
+         
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+    public function enable(Request $request)
+    {
+        ;
+        $status_id = $request->status_id;
+        $categoryId= $request->categoryId;
+        $updateStatus = Category::where('id',$categoryId)->Update(['status'=>$status_id]);
+        if($updateStatus)
+        {
+            return 1;
+        }else{
+            return 0;
+        }
+    }
+
+   
 }

@@ -32,6 +32,10 @@ Route::post ('/customLogin', 'AuthController@customLogin');
 Route::group(['middleware' => ['auth']], function () { 
 	Route::get('/admin','AdminController@index');
 	Route::resource('/category','CategoryController');
-	Route::get ( '/logout', 'AuthController@logout' );
+	Route::post('/updateCategory','CategoryController@updateCategory');
+	Route::post('/disable','CategoryController@disable');
+	Route::post('/enable','CategoryController@enable');
+	
+	Route::get('/logout', 'AuthController@logout' );
 
 });

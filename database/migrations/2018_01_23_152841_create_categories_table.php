@@ -17,7 +17,7 @@ class CreateCategoriesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->string('image');
-            $table->enum('status',['0','1'])->comment('1=>active,0=>inactive');
+            $table->enum('status',['0','1'])->comment('0=>active,1=>inactive');
             $table->timestamps();
         });
     }
