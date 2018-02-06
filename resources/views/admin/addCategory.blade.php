@@ -23,7 +23,7 @@
                   </div>
            @endif
 
-
+           <div id="ErrorMessage"></div>
             <form role="form" action="/category" method="post" enctype="multipart/form-data">
               {{ csrf_field() }}
               <div class="box-body">

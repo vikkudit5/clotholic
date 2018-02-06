@@ -157,7 +157,21 @@ $(document).ready(function(){
 		});
     });
 
-    
+/*for enter only alphabets*/
+    $('#name').keyup(function(){
+    	
+    	var regx = /^[A-Za-z]+$/;
+    	if(!regx.test(this.value))
+    	{
+    		$('#ErrorMessage').show();
+    		$('#ErrorMessage').html("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'> × </button> <strong>Error!</strong>Please Enter Alphabets Only!!</div>");
+    		
+    	}else
+    	{
+    		$('#ErrorMessage').hide();
+    	}
+	    	
+    });
 
 
 
