@@ -25,8 +25,8 @@
            @endif
 
 
-            <form role="form" action="" enctype="multipart/form-data">
-              
+            <form role="form" action="/updateCategory" method="post" id="updateForm" enctype="multipart/form-data">
+              {{ csrf_field() }}
               <div class="box-body">
                 <div class="form-group">
                   <label for="exampleInputEmail1">Category Name</label>
@@ -44,7 +44,7 @@
                     <img src="{{ url('/') }}/upload/category/{{$editCategory->image}}" style="width: 50px;height: 50px;">
                     @endif
 
-                    <input type="hidden" id="updateId" value="{{$editCategory->id}}" name="updateId">
+                    <input type="hidden" id="updateId" name="updateId" value="{{$editCategory->id}}" name="updateId">
                 </div>
                 
               </div>

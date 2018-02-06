@@ -155,53 +155,12 @@ $(document).ready(function(){
 		        }
 		    }
 		});
-    })
-
-    $('#update').click(function(){
-
-    	 var categoryId = $('#updateId').val();
-    	 var formdata  = new FormData($('#updateForm')[0]);
-
-    	 $.confirm({
-		    title: 'Status?',
-		    content: 'Are You Sure Want to Update ?',
-		    type: 'green',
-		    buttons: {   
-		        ok: {
-		            text: "ok!",
-		            btnClass: 'btn-primary',
-		            keys: ['enter'],
-		            action: function(){
-		                 
-		                  $.ajax({
-						        	type:"post",
-						        	data:formdata,
-						        	url:"updateCategory/"+categoryId,
-						        	dataType:"text",
-						        	success:function(result)
-						        	{
-						        		if(result == 1)
-						        		{
-
-						        			$('#message').html("<div class='alert alert-success'><button type='button' class='close' data-dismiss='alert'> × </button> <strong>Success!</strong> Status has been changed!!</div>");
-						        		}else if(result == 0)
-						        		{
-						        			$('#message').html("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'> × </button> <strong>Error!</strong> Status has Not been changed!!</div>")	
-						        		}
-
-									},
-						        	error:function(error)
-						        	{
-						        		$('#message').html("<div class='alert alert-danger'><button type='button' class='close' data-dismiss='alert'> × </button> <strong>Error!</strong> Status has Not been changed!!</div>")	
-						        	}
-						        });
-		            }
-		        },
-		        cancel: function(){
-		                console.log('the user clicked cancel');
-		        }
-		    }
-		});
-    	 
     });
+
+    
+
+
+
+
+
 });

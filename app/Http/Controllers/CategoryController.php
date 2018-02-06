@@ -112,7 +112,7 @@ class CategoryController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function updateCategory(Request $request, $id)
+    public function update(Request $request, $id)
     {
         dd($request->all());
     }
@@ -158,16 +158,27 @@ class CategoryController extends Controller
 
     public function enable(Request $request)
     {
-        ;
-        $status_id = $request->status_id;
-        $categoryId= $request->categoryId;
-        $updateStatus = Category::where('id',$categoryId)->Update(['status'=>$status_id]);
+        $updateStatus = Category::where('id',$request->categoryId)->Update(['status'=>$request->status_id]);
         if($updateStatus)
         {
             return 1;
         }else{
             return 0;
         }
+    }
+
+
+    public function updateCategory(Request $request)
+    {
+        $imageName = time().'.'.$request->image->getClientOriginalExtension();
+        $request->image->move(public_path('upload/category'),$imageName);
+        $updateCategory = Category::where('id',$request->updateId)->update(['name'=>$request->name,'image'=>$imageName]);
+        
+        if($updateCategory)
+        {
+            return Redirect::back()->with('message', '<strong>' .$request->name . '</strong> has been updated succesfully');
+        }
+
     }
 
    
